@@ -1,9 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-/**
- * Converts the legacy string identifiers to database-generated integer IDs.
- * Existing rows keep their relationships through temporary ID mappings.
- */
 export class ConvertIdsToAutoIncrement1795469215585 implements MigrationInterface {
   name = 'ConvertIdsToAutoIncrement1795469215585';
 

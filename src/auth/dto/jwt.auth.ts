@@ -1,4 +1,3 @@
-// auth/jwt-auth.provider.ts
 import { Injectable } from '@nestjs/common';
 import { AuthenticationRegistry, JwtBearerProvider, type JwtClaims } from '@nestjs/authentication';
 import type { User } from '../../users/entities/user.entity';
@@ -10,11 +9,10 @@ export class JwtAuth extends JwtBearerProvider<User> {
     private readonly usersService: UsersService,
     registry: AuthenticationRegistry,
   ) {
-    super({ realm: 'api' }); // key, issuer, audience lấy từ option accessToken
+    super({ realm: 'api' });
     registry.registerProvider(this);
   }
 
-  // Chạy sau khi chữ ký và hạn token đã hợp lệ. Trả null nếu user đã bị xóa → token bị từ chối.
   validate({ sub }: JwtClaims) {
     return sub ? this.usersService.findById(Number(sub)) : null;
   }

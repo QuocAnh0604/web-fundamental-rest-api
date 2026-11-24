@@ -11,14 +11,12 @@ export class BookingPolicy implements PolicyBefore<User> {
     if (user?.role === Role.ADMIN) return true;
   }
 
-  // --- route ---
   create(user: User | null)        { return !!user; }
   viewMine(user: User | null)      { return !!user; }
-  changeStatus(_user: User | null) { return false; } // chỉ admin
+  changeStatus(_user: User | null) { return false; }
 
-  // --- service ---
-  viewAll(_user: User | null)    { return false; }          // chỉ admin
-  assignUser(_user: User | null) { return false; }          // chỉ admin đặt/đổi userId
+  viewAll(_user: User | null)    { return false; }
+  assignUser(_user: User | null) { return false; }
 
   async view(user: User | null, bookingId: number) {
     if (!user) return false;

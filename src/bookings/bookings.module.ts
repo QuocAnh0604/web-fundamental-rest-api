@@ -1,4 +1,3 @@
-// bookings/bookings.module.ts
 import { Module } from "@nestjs/common";
 import { ServicesModule } from "../services/services.module";
 import { BookingsController } from "./bookings.controller";

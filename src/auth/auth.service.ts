@@ -1,4 +1,3 @@
-// auth/auth.service.ts
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PasswordHasher, TokenService } from '@nestjs/authentication';
 import { UsersService } from '../users/users.service';
@@ -40,17 +39,13 @@ export class AuthService {
     }
 
     const user = await this.usersService.findByEmailForAuth(email);
-    // verify() với hash null vẫn tốn thời gian như bình thường (hash giả bên trong),
-    // nên không dò được email nào tồn tại qua thời gian phản hồi.
     const valid = await this.passwordHasher.verify(password, user?.passwordHash);
     if (!user || !user.passwordHash || !valid) {
       throw new UnauthorizedException('Invalid email or password');
     }
     return this.tokenService.issue(String(user.id), { method: 'password' });
-    // → { accessToken, refreshToken, expiresIn }
   }
 
-  // Sai/hết hạn/dùng lại refresh token → package tự ném 401 (và thu hồi cả "họ" token nếu bị dùng lại)
   refresh(refreshToken: string) {
     if (typeof refreshToken !== 'string' || !refreshToken.trim()) {
       throw new UnauthorizedException('Invalid refresh token');

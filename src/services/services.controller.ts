@@ -1,4 +1,3 @@
-// services/services.controller.ts
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { Can } from '@nestjs/authorization';

@@ -1,4 +1,3 @@
-// services/services.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Service } from './entities/service.entity';
 import { ServicesRepository } from './services.repository';

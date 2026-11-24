@@ -1,4 +1,3 @@
-// auth/auth.controller.ts
 import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { CurrentUser, Public } from '@nestjs/authentication';
 import type { User } from '../users/entities/user.entity';

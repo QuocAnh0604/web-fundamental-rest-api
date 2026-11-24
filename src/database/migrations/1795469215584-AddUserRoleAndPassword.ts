@@ -10,7 +10,6 @@ export class AddUserRoleAndPassword1795469215584 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        // The preceding migration owns these shared columns and enum.
     }
 
 }
