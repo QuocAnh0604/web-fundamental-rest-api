@@ -3,6 +3,7 @@ import { ServicesService } from '../services/services.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BookingsRepository } from './bookings.repository';
+import { BookingStatus } from './enums/booking-status.enum';
 
 const writableFields = ['serviceId', 'date', 'timeSlot'] as const;
 
@@ -31,7 +32,7 @@ export class BookingsService {
       serviceId: dto.serviceId,
       date: dto.date,
       timeSlot: dto.timeSlot,
-      status: 'PENDING',
+      status: BookingStatus.PENDING,
     });
   }
 
@@ -60,6 +61,18 @@ export class BookingsService {
     const updated = await this.bookingsRepository.update(id, {
       ...data,
     });
+    if (!updated) throw new NotFoundException({ message: 'Booking not found' });
+    return updated;
+  }
+
+  async changeStatus(id: number, status: BookingStatus) {
+    await this.findOne(id);
+    if (!this.isBookingStatus(status)) {
+      throw new BadRequestException({
+        message: `status must be one of: ${Object.values(BookingStatus).join(', ')}`,
+      });
+    }
+    const updated = await this.bookingsRepository.update(id, { status });
     if (!updated) throw new NotFoundException({ message: 'Booking not found' });
     return updated;
   }
@@ -95,6 +108,10 @@ export class BookingsService {
     if (dto.timeSlot !== undefined && (typeof dto.timeSlot !== 'string' || dto.timeSlot.trim().length < 1 || dto.timeSlot.length > 80)) {
       throw new BadRequestException({ message: 'timeSlot must be between 1 and 80 characters' });
     }
+  }
+
+  private isBookingStatus(status: string): status is BookingStatus {
+    return Object.values(BookingStatus).includes(status as BookingStatus);
   }
 
   private isValidDate(value: unknown): value is string {

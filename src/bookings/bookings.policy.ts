@@ -2,6 +2,7 @@ import { Policy, type PolicyBefore } from '@nestjs/authorization';
 import { Role } from '../auth/enum/roles.enum';
 import type { User } from '../users/entities/user.entity';
 import { BookingsService } from './bookings.service';
+import { BookingStatus } from './enums/booking-status.enum';
 
 @Policy()
 export class BookingPolicy implements PolicyBefore<User> {
@@ -27,18 +28,18 @@ export class BookingPolicy implements PolicyBefore<User> {
   async update(user: User | null, bookingId: number) {
     if (!user) return false;
     const booking = await this.bookingsService.findOne(bookingId);
-    return booking.userId === user.id && booking.status === 'PENDING';
+    return booking.userId === user.id && booking.status === BookingStatus.PENDING;
   }
 
   async remove(user: User | null, bookingId: number) {
     if (!user) return false;
     const booking = await this.bookingsService.findOne(bookingId);
-    return booking.userId === user.id && booking.status === 'PENDING';
+    return booking.userId === user.id && booking.status === BookingStatus.PENDING;
   }
 
   async cancel(user: User | null, bookingId: number) {
     if (!user) return false;
     const booking = await this.bookingsService.findOne(bookingId);
-    return booking.userId === user.id && ['PENDING', 'CONFIRMED'].includes(booking.status);
+    return booking.userId === user.id && [BookingStatus.PENDING, BookingStatus.CONFIRMED].includes(booking.status);
   }
 }

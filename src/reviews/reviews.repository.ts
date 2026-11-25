@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from './entities/review.entity';
 import { Booking } from '../bookings/entities/booking.entity';
+import { BookingStatus } from '../bookings/enums/booking-status.enum';
 
 @Injectable()
 export class ReviewsRepository {
@@ -26,7 +27,7 @@ export class ReviewsRepository {
   }
 
   hasCompletedBooking(userId: number, serviceId: number): Promise<boolean> {
-    return this.bookings.exists({ where: { userId, serviceId, status: 'COMPLETED' } });
+    return this.bookings.exists({ where: { userId, serviceId, status: BookingStatus.COMPLETED } });
   }
 
   create(data: Partial<Review>): Promise<Review> {

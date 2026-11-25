@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Patch, Po
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
+import { ChangeBookingStatusDto } from './dto/change-booking-status.dto';
 import { Can } from '@nestjs/authorization';
 import { BookingPolicy } from './bookings.policy';
 import { CurrentUser } from '@nestjs/authentication';
@@ -23,6 +24,12 @@ export class BookingsController {
     Number(context.switchToHttp().getRequest<{ params: { id: string } }>().params.id),
   ])
   findOne(@Param('id', ParseIntPipe) id: number) { return this.bookings.findOne(id); }
+
+  @Patch(':id/status')
+  @Can(BookingPolicy, 'changeStatus')
+  changeStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: ChangeBookingStatusDto) {
+    return this.bookings.changeStatus(id, dto.status);
+  }
 
   @Post()
    @Can(BookingPolicy, 'create')

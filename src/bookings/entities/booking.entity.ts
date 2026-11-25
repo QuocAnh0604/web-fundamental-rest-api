@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BookingStatus } from '../enums/booking-status.enum';
 @Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn()
@@ -17,5 +18,5 @@ export class Booking {
   timeSlot!: string;
 
   @Column({ type: 'varchar', length: 30, default: 'PENDING' })
-  status!: string;
+  status!: BookingStatus;
 }
