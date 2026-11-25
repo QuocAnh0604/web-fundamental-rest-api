@@ -102,7 +102,7 @@ Request không có hoặc có JWT không hợp lệ bị authentication guard t�
 | PATCH | `/users/:id` | Chính user đó hoặc `admin` | Chỉ sửa name/email. |
 | DELETE | `/users/:id` | `admin`, trừ chính mình | Controller chặn admin tự xoá tài khoản. |
 
-Không có `POST /users`; user mới phải đi qua `/auth/register` để có password hash.
+user mới phải đi qua `/auth/register` để có password hash.
 
 ## 5. Mô hình phân quyền
 
@@ -151,7 +151,24 @@ Code hiện có hai role:
 - Không có cấu hình CORS, security headers hoặc audit logging riêng trong source hiện tại.
 - Không có flow tự khởi tạo admin; role admin phải được tạo/cập nhật ngoài các endpoint public hiện có.
 
-## 8. Test nhanh bằng curl
+## 8. Seed data cho test
+
+Migration chỉ tạo schema. Trước khi test các endpoint cần role, ownership hoặc booking đã hoàn tất, chạy:
+
+```powershell
+npm.cmd run seed
+```
+
+Seed idempotent và tạo sẵn:
+
+| Account | Password | Role |
+|---|---|---|
+| `admin@example.com` | `Password123!` | `admin` |
+| `user@example.com` | `Password123!` | `user` |
+
+Ngoài ra có 2 service, 1 booking `COMPLETED` cho `user@example.com` (dùng để test create review), 1 booking `PENDING` (dùng để test update/delete booking) và 1 review mẫu (dùng để test GET/PUT/PATCH/DELETE review). Chỉ dùng credential này trong local/test.
+
+## 9. Test nhanh bằng curl
 
 Đặt biến môi trường shell:
 

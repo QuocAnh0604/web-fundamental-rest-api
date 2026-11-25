@@ -51,7 +51,23 @@ npm.cmd run migration:run
 
 Migration chỉ tạo/cập nhật schema, chưa tự động seed dữ liệu.
 
-### 4. Chạy API
+### 4. Seed dữ liệu test
+
+Sau khi migration xong, chạy:
+
+```powershell
+npm.cmd run seed
+```
+
+Lệnh seed an toàn khi chạy lại và tạo sẵn:
+
+- `admin@example.com` / `Password123!` (role `admin`)
+- `user@example.com` / `Password123!` (role `user`)
+- 2 services, 1 booking `COMPLETED`, 1 booking `PENDING` và 1 review mẫu
+
+Không dùng các tài khoản seed này trong production.
+
+### 5. Chạy API
 
 ```powershell
 npm.cmd run start:dev
